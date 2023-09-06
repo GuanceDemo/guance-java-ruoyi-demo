@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ruoyi-redis
+  labels:
+    prod: redis
+  annotations:
+    "helm.sh/hook-weight": "-1"
+  
+spec:
+  selector:
+    matchLabels:
+      prod: redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        prod: redis
+    spec:
+      containers:
+        - name: ruoyi-redis
+          ports:
+            - containerPort: 6379
+          image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-redis:{{ .Values.global.version }}
+          imagePullPolicy: IfNotPresent

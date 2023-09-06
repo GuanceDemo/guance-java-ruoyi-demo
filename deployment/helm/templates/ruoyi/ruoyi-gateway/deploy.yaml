@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+  labels:
+    app: gateway-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-service
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+      annotations:
+        admission.datakit/java-lib.version: ""
+    spec:
+      containers:
+        - name: gateway-container
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.hostIP
+            - name: JAVA_OPTS
+              value: |-
+                -javaagent:/datadog-lib/dd-java-agent.jar -Ddd.service={{ .Values.ruoyi.prefix }}-gateway  -Ddd.profiling.enabled=true -Ddd.profiling.allocation.enabled=true -Ddd.tags=container_host:\$(POD_NAME) -Ddd.service.mapping=mysql:{{ .Values.ruoyi.prefix }}-mysql,redis:{{ .Values.ruoyi.prefix }}-redis -Ddd.env={{ .Values.ruoyi.env }} -Ddd.agent.port=9529 -Dfile.encoding=utf-8
+            - name: PARAMS
+              value: "--spring.redis.host=redis-service --spring.nacos.ip=nacos-service"
+          image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-gateway:{{ .Values.global.version }}
+          resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9299
+              protocol: TCP
+          volumeMounts:
+            - name: gateway-log
+              mountPath: /data/app/logs
+
+      restartPolicy: Always
+      volumes:
+        - name: gateway-log
+          hostPath:
+            path: /data/logs
+            type: DirectoryOrCreate

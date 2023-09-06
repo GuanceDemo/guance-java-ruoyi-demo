@@ -1,0 +1,19 @@
+global:
+  version: latest
+  docker_registry: pubrepo.guance.com
+  docker_namespace: demo
+  resources:
+    limits:
+      cpu: 200m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+ruoyi:
+  prefix: ruoyi
+  env: prod
+  version: "1.0"
+
+middleware:
+  storageClass: manual

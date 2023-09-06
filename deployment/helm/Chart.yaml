@@ -1,0 +1,9 @@
+apiVersion: v2
+name: ruoyi
+description: Ruoyi-cloud-demo for GuanceCloud
+type: application
+version: "v1.0"
+appVersion: "v1.0"
+dependencies:
+  - name: middleware
+    version: "v1.0"

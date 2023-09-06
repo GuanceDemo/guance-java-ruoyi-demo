@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+  
+  labels:
+    app: auth-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+      annotations:
+        admission.datakit/java-lib.version: ""
+    spec:
+      containers:
+        - name: auth-container
+          resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.hostIP
+            - name: JAVA_OPTS
+              value: |-
+                -javaagent:/datadog-lib/dd-java-agent.jar -Ddd.service={{ .Values.ruoyi.prefix }}-auth  -Ddd.profiling.enabled=true -Ddd.profiling.allocation.enabled=true -Ddd.tags=container_host:\$(POD_NAME) -Ddd.service.mapping=mysql:{{ .Values.ruoyi.prefix }}-mysql,redis:{{ .Values.ruoyi.prefix }}-redis -Ddd.env={{ .Values.ruoyi.env }} -Ddd.agent.port=9529
+            - name: PARAMS
+              value: "--spring.redis.host=redis-service --spring.nacos.ip=nacos-service"
+          image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-auth:{{ .Values.global.version }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9200
+              protocol: TCP
+          volumeMounts:
+            - name: auth-log
+              mountPath: /data/app/logs
+
+      restartPolicy: Always
+      volumes:
+        - name: auth-log
+          hostPath:
+            path: /data/logs
+            type: DirectoryOrCreate

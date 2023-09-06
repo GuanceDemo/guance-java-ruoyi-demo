@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: system-deployment
+  
+  labels:
+    app: system-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: system-pod
+  template:
+    metadata:
+      labels:
+        app: system-pod
+      annotations:
+        admission.datakit/java-lib.version: ""
+        datakit/logs: |
+          [
+            {
+              "disable": false,
+              "source": "{{ .Values.ruoyi.prefix }}-system",
+              "service": "{{ .Values.ruoyi.prefix }}-system"
+            }
+          ]
+    spec:
+      containers:
+        - name: system-container
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.hostIP
+            - name: JAVA_OPTS
+              value: |-
+                -javaagent:/datadog-lib/dd-java-agent.jar -Ddd.service={{ .Values.ruoyi.prefix }}-system  -Ddd.profiling.enabled=true -Ddd.profiling.allocation.enabled=true -Ddd.tags=container_host:\$(PODE_NAME) -Ddd.service.mapping=mysql:{{ .Values.ruoyi.prefix }}-mysql,redis:{{ .Values.ruoyi.prefix }}-redis -Ddd.env={{ .Values.ruoyi.env }} -Ddd.agent.port=9529
+            - name: PARAMS
+              value: "--spring.redis.host=redis-service --spring.nacos.ip=nacos-service"
+          image:   {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-system:{{ .Values.global.version }}
+          imagePullPolicy: IfNotPresent
+          resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+
+          ports:
+            - containerPort: 9201
+              protocol: TCP

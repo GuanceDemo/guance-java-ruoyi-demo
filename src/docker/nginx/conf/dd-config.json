@@ -1,0 +1,7 @@
+{
+    "environment": "prod",
+    "service": "ruoyi-nginx",
+    "agent_host": "datakit-service.datakit",
+    "operation_name_override": "nginx.handle",
+    "agent_port": 9529
+  }

@@ -1,0 +1,11 @@
+# 基础镜像
+FROM  openjdk:8-jre
+# author
+MAINTAINER ruoyi
+
+ENV jar ruoyi-visual-monitor.jar
+ENV workdir /data/app/
+RUN mkdir -p ${workdir}
+COPY ./jar/${jar} ${workdir}
+WORKDIR ${workdir}
+ENTRYPOINT ["sh", "-ec", "exec java ${JAVA_OPTS} -jar ${jar} ${PARAMS} 2>&1 > /dev/null"]

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-service
+  
+  labels:
+    app: web-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-service
+  template:
+    metadata:
+      labels:
+        app: web-service
+      annotations:
+        datakit/logs: |
+          [
+            {
+              "disable": false,
+              "source": "{{ .Values.ruoyi.prefix }}-nginx",
+              "service": "{{ .Values.ruoyi.prefix }}-web"
+            }
+          ]
+    spec:
+      containers:
+        - env:
+            - name: PODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          name: web-service
+          image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-web:{{ .Values.global.version }}
+          imagePullPolicy: Always
+          resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+          ports:
+            - containerPort: 80
+              protocol: TCP

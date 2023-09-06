@@ -1,0 +1,116 @@
+name: Manage Guance resources using terraform
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - 'terraform/**'
+  workflow_dispatch:
+    inputs:
+      ops:
+        type: choice
+        description: terraform apply or destroy
+        options:
+          - apply
+          - destroy
+
+permissions:
+  contents: read
+
+jobs:
+  terraform_apply:
+    if: ${{ inputs.ops == null || inputs.ops == 'apply'}}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./terraform
+
+    env:
+      PREFIX: guance-java-ruoyi-demo
+      GUANCE_ACCESS_TOKEN: ${{ secrets.GUANCE_ACCESS_TOKEN }}
+      GUANCE_REGION: ${{ vars.GUANCE_REGION }}
+        
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download terraform state from artifact
+        uses: dawidd6/action-download-artifact@v2
+        continue-on-error: true
+        with:
+          name: ${{ env.PREFIX }}-terraform-state
+          path: ./terraform
+          workflow: ${{ github.event.workflow_run.workflow_id }}
+          workflow_conclusion: success
+          if_no_artifact_found: ignore
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.3.9
+
+      - name: Terraform fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform init
+        run: terraform init
+
+      - name: Terraform plan
+        continue-on-error: false
+        run:  terraform plan
+
+      - name: Terraform apply
+        id: apply
+        run: terraform apply -auto-approve
+
+      - name: Store terraform state as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.PREFIX }}-terraform-state
+          path: ./terraform/terraform.tfstate
+
+
+  terraform_destroy:
+    if: ${{ inputs.ops == 'destroy' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./terraform
+
+    env:
+      PREFIX: guance-java-ruoyi-demo
+      GUANCE_ACCESS_TOKEN: ${{ secrets.GUANCE_ACCESS_TOKEN }}
+      GUANCE_REGION: ${{ vars.GUANCE_REGION }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download terraform state from artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: ${{ env.PREFIX }}-terraform-state
+          path: ./terraform
+          workflow: ${{ github.event.workflow_run.workflow_id }}
+          workflow_conclusion: success
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.3.9
+
+      - name: Terraform fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform init
+        run: terraform init
+
+      - name: Terraform plan
+        continue-on-error: false
+        run: terraform plan
+
+      - name: Terraform destroy
+        id: apply
+        run: terraform destroy -auto-approve

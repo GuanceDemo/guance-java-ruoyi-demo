@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ruoyi-mysql
+  annotations:
+     "helm.sh/hook-weight": "-3"
+  
+  labels:
+    prod: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      prod: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        prod: mysql
+    spec:
+      containers:
+        - image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-mysql:{{ .Values.global.version }}
+          imagePullPolicy: IfNotPresent
+          name: ruoyi-mysql
+          env:
+            # 在实际中使用 secret
+            - name: MYSQL_ROOT_PASSWORD
+              value: password
+          ports:
+            - containerPort: 3306
+              name: ruoyi-mysql
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim

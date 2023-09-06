@@ -1,0 +1,7 @@
+apiVersion: v2
+appVersion: "v1.0"
+name: middleware
+description: ruoyi-cloud-demo middleware
+type: application
+version: "v1.0"
+

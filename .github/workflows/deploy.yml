@@ -1,0 +1,23 @@
+name: Deploy ruoyi demo on kubernetes
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up kubectl
+        uses: azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+
+      - name: Install Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+      - name: Deploy on Kubernetes
+        run: helm upgrade -i ruoyi -n ruoyi --create-namespace ./deployment/helm
