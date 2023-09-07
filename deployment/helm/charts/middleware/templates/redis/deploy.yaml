@@ -22,4 +22,4 @@ spec:
           ports:
             - containerPort: 6379
           image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-redis:{{ .Values.global.version }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always

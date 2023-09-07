@@ -32,7 +32,7 @@ spec:
             - name: EMBEDDED_STORAGE
               value: embedded
           image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-nacos:{{ .Values.global.version }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: nacos
           ports:
             - containerPort: 8848

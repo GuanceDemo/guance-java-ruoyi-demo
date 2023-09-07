@@ -43,7 +43,7 @@ spec:
             - name: PARAMS
               value: "--spring.redis.host=redis-service --spring.nacos.ip=nacos-service"
           image:   {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-system:{{ .Values.global.version }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           resources:
           {{- toYaml .Values.resources | nindent 12 }}
 

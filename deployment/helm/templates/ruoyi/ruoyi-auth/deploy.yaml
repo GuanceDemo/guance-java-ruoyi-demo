@@ -41,7 +41,7 @@ spec:
             - name: PARAMS
               value: "--spring.redis.host=redis-service --spring.nacos.ip=nacos-service"
           image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-auth:{{ .Values.global.version }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 9200
               protocol: TCP

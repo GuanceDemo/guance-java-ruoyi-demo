@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-mysql:{{ .Values.global.version }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: ruoyi-mysql
           env:
             # 在实际中使用 secret

@@ -40,7 +40,7 @@ spec:
           image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-gateway:{{ .Values.global.version }}
           resources:
           {{- toYaml .Values.resources | nindent 12 }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 9299
               protocol: TCP
