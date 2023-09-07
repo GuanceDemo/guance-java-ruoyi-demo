@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mysql-pv-volume
+  name: ruoyi-mysql-pv-volume
   labels:
     type: local
   annotations:
@@ -9,8 +9,8 @@ metadata:
 spec:
   storageClassName: {{ .Values.storageClass }}
   capacity:
-    storage: 10Gi
+    storage: 5Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/var/mysql"
+    path: "/data/ruoyi/mysql"
