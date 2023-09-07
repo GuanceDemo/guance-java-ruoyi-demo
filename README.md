@@ -43,6 +43,12 @@ kubectl get pod -n ruoyi -o wide
 ```
 
 ### 2. 卸载
+#### 2.1 删除观测云资源
+```shell
+cd guance-java-ruoyi-demo/terraform
+terraform destroy -auto-approve 
+```
+#### 2.2 卸载若依
 ```
 helm unintall ruoyi -n ruoyi
 ```
