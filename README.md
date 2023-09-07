@@ -10,7 +10,7 @@
 
 ***
 
-## 方式一：Helm方式手动安装
+## 方式一：Helm 方式手动安装
 > 通过 Helm 安装至 Kubernetes 集群，适合快速安装 guance-java-ruoyi-demo 进行演示的场景。
 
 ### 1. 安装
@@ -50,12 +50,12 @@ terraform destroy -auto-approve
 ```
 #### 2.2 卸载若依
 ```
-helm unintall ruoyi -n ruoyi
+helm uninstall ruoyi -n ruoyi
 ```
 
 ***
 
-## 方式二：自动化部署
+## 方式二：自动化打包部署
 > 通过 Github Action 自动打包并安装至 Kubernetes 集群，适合对 guance-java-ruoyi-demo 源码修改的场景。
  
 ### 1. fork 代码到自己的 Github 仓库
