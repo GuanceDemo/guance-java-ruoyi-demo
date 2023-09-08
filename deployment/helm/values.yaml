@@ -12,8 +12,8 @@ global:
 
 ruoyi:
   prefix: ruoyi
-  env: prod
-  version: "1.0"
+  env: prod-demo
+  version: "2.0"
 
 middleware:
   storageClass: manual

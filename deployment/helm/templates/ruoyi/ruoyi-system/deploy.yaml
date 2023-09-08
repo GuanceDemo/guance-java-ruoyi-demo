@@ -39,7 +39,7 @@ spec:
                   fieldPath: status.hostIP
             - name: JAVA_OPTS
               value: |-
-                -javaagent:/datadog-lib/dd-java-agent.jar -Ddd.service={{ .Values.ruoyi.prefix }}-system  -Ddd.profiling.enabled=true -Ddd.profiling.allocation.enabled=true -Ddd.tags=container_host:\$(PODE_NAME) -Ddd.service.mapping=mysql:{{ .Values.ruoyi.prefix }}-mysql,redis:{{ .Values.ruoyi.prefix }}-redis -Ddd.env={{ .Values.ruoyi.env }} -Ddd.agent.port=9529
+                -javaagent:/datadog-lib/dd-java-agent.jar -Ddd.service={{ .Values.ruoyi.prefix }}-system  -Ddd.profiling.enabled=true -Ddd.profiling.allocation.enabled=true -Ddd.tags=container_host:\$(POD_NAME) -Ddd.service.mapping=mysql:{{ .Values.ruoyi.prefix }}-mysql,redis:{{ .Values.ruoyi.prefix }}-redis -Ddd.env={{ .Values.ruoyi.env }} -Ddd.agent.port=9529
             - name: PARAMS
               value: "--spring.redis.host=redis-service --spring.nacos.ip=nacos-service"
           image:   {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-system:{{ .Values.global.version }}
