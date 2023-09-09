@@ -1,4 +1,4 @@
-FROM openjdk:8
+FROM eclipse-temurin:8u382-b05-jre
 MAINTAINER Harlon
 
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
