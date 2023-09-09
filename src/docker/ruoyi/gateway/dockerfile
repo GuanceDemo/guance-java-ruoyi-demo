@@ -1,4 +1,4 @@
-FROM openjdk:8u292
+FROM openjdk:8u352
 MAINTAINER Harlon
 
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
