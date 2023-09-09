@@ -1,5 +1,5 @@
 # 基础镜像
-FROM openjdk:8u352
+FROM openjdk:8
 MAINTAINER Harlon
 
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
