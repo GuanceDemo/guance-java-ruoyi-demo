@@ -16,14 +16,6 @@ spec:
         app: system-pod
       annotations:
         admission.datakit/java-lib.version: ""
-        datakit/logs: |
-          [
-            {
-              "disable": false,
-              "source": "{{ .Values.ruoyi.prefix }}-system",
-              "service": "{{ .Values.ruoyi.prefix }}-system"
-            }
-          ]
     spec:
       containers:
         - name: system-container
@@ -50,3 +42,13 @@ spec:
           ports:
             - containerPort: 9201
               protocol: TCP
+          volumeMounts:
+            - name: system-log
+              mountPath: /data/app/logs
+
+      restartPolicy: Always
+      volumes:
+        - name: system-log
+          hostPath:
+            path: /data/logs
+            type: DirectoryOrCreate
