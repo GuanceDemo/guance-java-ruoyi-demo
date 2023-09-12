@@ -50,13 +50,3 @@ spec:
           ports:
             - containerPort: 9201
               protocol: TCP
-          volumeMounts:
-            - name: system-log
-              mountPath: /data/app/logs
-
-      restartPolicy: Always
-      volumes:
-        - name: system-log
-          hostPath:
-            path: /data/logs
-            type: DirectoryOrCreate
