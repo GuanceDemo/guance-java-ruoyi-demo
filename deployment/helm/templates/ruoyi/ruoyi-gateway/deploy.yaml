@@ -15,6 +15,19 @@ spec:
         app: gateway-service
       annotations:
         admission.datakit/java-lib.version: ""
+        datakit/logging.logs: |
+          [
+            {
+              "disable": false,
+              "type": "file",
+              "path":"/data/logs/ruoyi-gateway",
+              "source":  "{{ .Values.ruoyi.prefix }}-gateway"
+            },
+            {
+              "disable": false,
+              "source":  "{{ .Values.ruoyi.prefix }}-gateway-output"
+            }
+          ]
     spec:
       containers:
         - name: gateway-container
