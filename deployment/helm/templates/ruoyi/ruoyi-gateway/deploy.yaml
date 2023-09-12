@@ -34,7 +34,7 @@ spec:
                   fieldPath: status.hostIP
             - name: JAVA_OPTS
               value: |-
-                -javaagent:/datadog-lib/dd-java-agent.jar -Ddd.service={{ .Values.ruoyi.prefix }}-gateway  -Ddd.profiling.enabled=true -Ddd.profiling.allocation.enabled=true -Ddd.tags=container_host:\$(POD_NAME) -Ddd.service.mapping=mysql:{{ .Values.ruoyi.prefix }}-mysql,redis:{{ .Values.ruoyi.prefix }}-redis -Ddd.env={{ .Values.ruoyi.env }} -Ddd.agent.port=9529 -Dfile.encoding=utf-8
+                -javaagent:/datadog-lib/dd-java-agent.jar -XX:FlightRecorderOptions=stackdepth=256 -Ddd.service={{ .Values.ruoyi.prefix }}-gateway  -Ddd.logs.injection=true -Ddd.profiling.enabled=true -Ddd.profiling.ddprof.enabled=true -Ddd.profiling.ddprof.cpu.enabled=true -Ddd.profiling.ddprof.wall.enabled=true -Ddd.profiling.ddprof.alloc.enabled=true -Ddd.profiling.ddprof.liveheap.enabled=true -Ddd.tags=container_host:$(POD_NAME) -Ddd.service.mapping=mysql:{{ .Values.ruoyi.prefix }}-mysql,redis:{{ .Values.ruoyi.prefix }}-redis -Ddd.env={{ .Values.ruoyi.env }} -Ddd.version={{ .Values.ruoyi.version }} -Ddd.agent.port=9529
             - name: PARAMS
               value: "--spring.redis.host=redis-service --spring.nacos.ip=nacos-service"
           image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-gateway:{{ .Values.global.version }}
