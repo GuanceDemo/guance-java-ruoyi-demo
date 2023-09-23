@@ -16,19 +16,6 @@ spec:
         app: auth-service
       annotations:
         admission.datakit/java-lib.version: ""
-        datakit/logging.logs: |
-          [
-            {
-              "disable": false,
-              "type": "file",
-              "path":"/data/logs/ruoyi-auth",
-              "source":  "{{ .Values.ruoyi.prefix }}-auth"
-            },
-            {
-              "disable": false,
-              "source":  "{{ .Values.ruoyi.prefix }}-auth-output"
-            }
-          ]
     spec:
       containers:
         - name: auth-container

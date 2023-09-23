@@ -16,19 +16,6 @@ spec:
         app: system-pod
       annotations:
         admission.datakit/java-lib.version: ""
-        datakit/logging.logs: |
-          [
-            {
-              "disable": false,
-              "type": "file",
-              "path":"/data/logs/ruoyi-system",
-              "source":  "{{ .Values.ruoyi.prefix }}-system"
-            },
-            {
-              "disable": false,
-              "source":  "{{ .Values.ruoyi.prefix }}-system-output"
-            }
-          ]
     spec:
       containers:
         - name: system-container
