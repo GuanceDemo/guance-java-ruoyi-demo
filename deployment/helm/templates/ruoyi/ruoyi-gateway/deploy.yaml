@@ -19,7 +19,7 @@ spec:
       containers:
         - name: gateway-container
           resources:
-          { { - toYaml .Values.global.resources | nindent 12 } }
+          {{- toYaml .Values.global.resources | nindent 12 }}
           env:
             - name: POD_NAME
               valueFrom:
