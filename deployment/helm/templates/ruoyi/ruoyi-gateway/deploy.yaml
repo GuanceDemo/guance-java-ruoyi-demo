@@ -18,6 +18,8 @@ spec:
     spec:
       containers:
         - name: gateway-container
+          resources:
+          { { - toYaml .Values.global.resources | nindent 12 } }
           env:
             - name: POD_NAME
               valueFrom:
@@ -38,8 +40,6 @@ spec:
             - name: PARAMS
               value: "--spring.redis.host=redis-service --spring.nacos.ip=nacos-service"
           image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-gateway:{{ .Values.global.version }}
-          resources:
-          {{- toYaml .Values.resources | nindent 12 }}
           imagePullPolicy: Always
           ports:
             - containerPort: 9299

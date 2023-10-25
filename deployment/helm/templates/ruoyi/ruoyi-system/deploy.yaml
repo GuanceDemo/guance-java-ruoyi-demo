@@ -19,6 +19,8 @@ spec:
     spec:
       containers:
         - name: system-container
+          resources:
+          { { - toYaml .Values.global.resources | nindent 12 } }
           env:
             - name: POD_NAME
               valueFrom:
@@ -36,8 +38,6 @@ spec:
               value: "--spring.redis.host=redis-service --spring.nacos.ip=nacos-service"
           image:   {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-system:{{ .Values.global.version }}
           imagePullPolicy: Always
-          resources:
-          {{- toYaml .Values.resources | nindent 12 }}
 
           ports:
             - containerPort: 9201

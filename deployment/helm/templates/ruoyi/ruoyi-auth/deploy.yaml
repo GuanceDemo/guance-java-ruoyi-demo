@@ -20,7 +20,7 @@ spec:
       containers:
         - name: auth-container
           resources:
-          {{- toYaml .Values.resources | nindent 12 }}
+          {{- toYaml .Values.global.resources | nindent 12 }}
           env:
             - name: POD_NAME
               valueFrom:
