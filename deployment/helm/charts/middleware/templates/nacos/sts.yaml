@@ -6,7 +6,7 @@ metadata:
   name: ruoyi-nacos
   annotations:
     helm.sh/hook: pre-install
-    helm.sh/hook-weight: "6"
+    helm.sh/hook-weight: "-4"
   
 spec:
   replicas: 1
