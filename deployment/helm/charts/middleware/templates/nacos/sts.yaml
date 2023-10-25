@@ -33,8 +33,6 @@ spec:
               value: embedded
           image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-nacos:{{ .Values.global.version }}
           imagePullPolicy: Always
-          resources:
-          {{- toYaml .Values.global.resources | nindent 12 }}
           name: nacos
           ports:
             - containerPort: 8848
