@@ -4,7 +4,7 @@ global:
   docker_namespace: demo
   resources:
     limits:
-      cpu: 400m
+      cpu: 800m
       memory: 500Mi
     requests:
       cpu: 200m
