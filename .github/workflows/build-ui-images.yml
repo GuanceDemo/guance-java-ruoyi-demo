@@ -3,7 +3,7 @@ name: Build and push ruoyi ui demo images
 on:
   push:
     branches:
-      - master
+      - dev-opentelemetry-benjamin
     paths:
       - 'src/**'
   workflow_dispatch:
