@@ -14,7 +14,6 @@ RUN get_latest_release() { \
   } && \
   NGINX_VERSION=`nginx -v 2>&1 > /dev/null | sed -n 's/.*nginx\/\([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p'` && \
   OPENTRACING_NGINX_VERSION="v0.33.0" && \
-  DD_OPENTRACING_CPP_VERSION="$(get_latest_release DataDog/dd-opentracing-cpp)" && \
   \
   wget https://github.com/opentracing-contrib/nginx-opentracing/releases/download/${OPENTRACING_NGINX_VERSION}/linux-amd64-nginx-${NGINX_VERSION}-ot16-ngx_http_module.so.tgz && \
   NGINX_MODULES=$(nginx -V 2>&1 | grep "configure arguments" | sed -n 's/.*--modules-path=\([^ ]*\).*/\1/p') && \
@@ -22,13 +21,12 @@ RUN get_latest_release() { \
   # Install Datadog module
   wget -O - https://github.com/DataDog/dd-opentracing-cpp/releases/download/v1.3.7/linux-amd64-libdd_opentracing_plugin.so.gz | gunzip -c > /usr/local/lib/libdd_opentracing_plugin.so
 
-RUN wget -O /data/nginx/web/dist/dataflux-rum.js https://static.guance.com/browser-sdk/v3/dataflux-rum.js
-
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 COPY ./conf/dd-config.json /etc/nginx/dd-config.json
 RUN mkdir -p /data/nginx/web/dist/
 COPY ./html/dist/ /data/nginx/web/dist/
 #RUN chmod +x /data/nginx/web/dist/start.sh
+RUN wget -O /data/nginx/web/dist/dataflux-rum.js https://static.guance.com/browser-sdk/v3/dataflux-rum.js
 WORKDIR /etc/nginx
 
 #ENTRYPOINT ["/data/nginx/web/dist/start.sh"]
