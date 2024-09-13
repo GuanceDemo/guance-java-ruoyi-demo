@@ -115,6 +115,7 @@ public class LogAspect
             operLog.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
             // 保存数据库
             asyncLogService.saveSysLog(operLog);
+            log.info("请求{}，耗时：{}", operLog.getMethod(),operLog.getCostTime());
         }
         catch (Exception exp)
         {
