@@ -14,7 +14,6 @@ spec:
       labels:
         app: gateway-service
       annotations:
-        admission.datakit/java-lib.version: "",
         datakit/gateway-container.logs: |
           [
             {
