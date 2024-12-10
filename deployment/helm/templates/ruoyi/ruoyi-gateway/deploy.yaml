@@ -14,7 +14,20 @@ spec:
       labels:
         app: gateway-service
       annotations:
-        admission.datakit/java-lib.version: ""
+        admission.datakit/java-lib.version: "",
+        datakit/gateway-container.logs: |
+          [
+            {
+              "disable": false,
+              "type": "file",
+              "path":"/data/app/logs/*.log",
+              "source":  "ruoyi-log"
+            },
+            {
+              "disable": false,
+              "source":  "ruoyi-log"
+            }
+          ]
     spec:
       containers:
         - name: gateway-container
@@ -51,6 +64,4 @@ spec:
       restartPolicy: Always
       volumes:
         - name: gateway-log
-          hostPath:
-            path: /data/logs
-            type: DirectoryOrCreate
+          emptyDir: {}
