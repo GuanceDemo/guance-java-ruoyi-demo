@@ -7,7 +7,7 @@ metadata:
     app: gateway-service
 spec:
   selector:
-    app: gateway-service
+    app: ruoyi-gateway
   ports:
     - protocol: TCP
       port: 9299
