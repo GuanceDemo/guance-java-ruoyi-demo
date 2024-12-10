@@ -24,29 +24,26 @@
           window,
           document,
           'script',
-          './dataflux-rum.js',
+          'https://static.guance.com/browser-sdk/v3/dataflux-rum.js',
           'DATAFLUX_RUM'
       )
       DATAFLUX_RUM.onReady(function () {
           DATAFLUX_RUM.init({
-            applicationId: 'ruoyi_web',
-            datakitOrigin: '/rum',
-            env: 'prod-demo',
-            version: '3.0',
-            service: 'ruoyi_web_demo',
-            sessionSampleRate: 100,
-            sessionReplaySampleRate: 100,
-            trackInteractions: true,
-            traceType: 'ddtrace',
-            allowedTracingOrigins: [/.*/],
-          })
+          applicationId: 'ruoyi_web',
+          site: 'https://rum-openway.guance.com',
+          clientToken: '7609dc48b2c94a2586008d46862a080c',
+          env: 'prod',
+          version: '1.0.1',
+          service: 'ruoyi-web',
+          sessionSampleRate: 100,
+          sessionReplaySampleRate: 100,
+          trackInteractions: true,
+          traceType: 'ddtrace',
+          allowedTracingOrigins: [/.*/]
+          });
           window.DATAFLUX_RUM && window.DATAFLUX_RUM.startSessionReplayRecording()
-          DATAFLUX_RUM.setUser({
-               id: '123456789',
-               name: 'Guance',
-               email: 'Guance@guance.com',
-          })
       });
+      
       </script>
 
     <!--[if lt IE 11]><script>window.location.href='/html/ie.html';</script><![endif]-->
