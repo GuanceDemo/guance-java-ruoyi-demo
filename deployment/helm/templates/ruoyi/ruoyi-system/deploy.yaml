@@ -1,39 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: system-deployment
+  name: ruoyi-system
   
   labels:
-    app: system-pod
+    app: ruoyi-system
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: system-pod
+      app: ruoyi-system
   template:
     metadata:
       labels:
-        app: system-pod
+        app: ruoyi-system
       annotations:
-        admission.datakit/java-lib.version: ""
+        datakit/system-container.logs: |
+          [
+            {
+              "disable": false,
+              "type": "file",
+              "path":"/data/app/logs/**/*.log",
+              "source": "ruoyi-system"
+            },
+            {
+              "disable": false,
+              "source": "ruoyi-system"
+            }
+          ]
     spec:
       containers:
         - name: system-container
           resources:
           {{- toYaml .Values.global.resources | nindent 12 }}
           env:
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: DD_AGENT_HOST
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: status.hostIP
-            - name: JAVA_OPTS
-              value: |-
-                -javaagent:/datadog-lib/dd-java-agent.jar -XX:FlightRecorderOptions=stackdepth=256 -Ddd.service={{ .Values.ruoyi.prefix }}-system  -Ddd.logs.injection=true -Ddd.profiling.enabled=true -Ddd.profiling.ddprof.enabled=true -Ddd.profiling.ddprof.cpu.enabled=true -Ddd.profiling.ddprof.wall.enabled=true -Ddd.profiling.ddprof.alloc.enabled=true -Ddd.profiling.ddprof.liveheap.enabled=true -Ddd.tags=container_host:$(POD_NAME) -Ddd.service.mapping=mysql:{{ .Values.ruoyi.prefix }}-mysql,redis:{{ .Values.ruoyi.prefix }}-redis -Ddd.env={{ .Values.ruoyi.env }} -Ddd.version={{ .Values.ruoyi.version }} -Ddd.agent.port=9529
             - name: PARAMS
               value: "--spring.redis.host=redis-service --spring.nacos.ip=nacos-service"
           image:   {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-system:{{ .Values.global.version }}
@@ -49,6 +49,4 @@ spec:
       restartPolicy: Always
       volumes:
         - name: system-log
-          hostPath:
-            path: /data/logs
-            type: DirectoryOrCreate
+          emptyDir: {}
