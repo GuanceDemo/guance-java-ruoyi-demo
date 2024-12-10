@@ -19,12 +19,12 @@ spec:
             {
               "disable": false,
               "type": "file",
-              "path":"/data/app/logs/*.log",
-              "source":  "ruoyi-gateway"
+              "path":"/data/app/logs/**/*.log",
+              "source": "ruoyi-gateway"
             },
             {
               "disable": false,
-              "source":  "ruoyi-gateway"
+              "source": "ruoyi-gateway"
             }
           ]
     spec:
