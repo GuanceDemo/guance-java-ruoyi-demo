@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gateway-service
+  name: ruoyi-gateway
   labels:
-    app: gateway-service
+    app: ruoyi-gateway
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: gateway-service
+      app: ruoyi-gateway
   template:
     metadata:
       labels:
-        app: gateway-service
+        app: ruoyi-gateway
       annotations:
         datakit/gateway-container.logs: |
           [
