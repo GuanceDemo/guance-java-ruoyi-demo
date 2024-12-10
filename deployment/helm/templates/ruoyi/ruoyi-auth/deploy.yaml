@@ -1,43 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-service
+  name: ruoyi-auth
   
   labels:
-    app: auth-service
+    app: ruoyi-auth
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth-service
+      app: ruoyi-auth
   template:
     metadata:
       labels:
-        app: auth-service
+        app: ruoyi-auth
       annotations:
-        admission.datakit/java-lib.version: ""
+        datakit/auth-container.logs: |
+          [
+            {
+              "disable": false,
+              "type": "file",
+              "path":"/data/app/logs/**/*.log",
+              "source": "ruoyi-auth"
+            },
+            {
+              "disable": false,
+              "source": "ruoyi-auth"
+            }
+          ]
     spec:
       containers:
         - name: auth-container
           resources:
           {{- toYaml .Values.global.resources | nindent 12 }}
           env:
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: MY_NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
-            - name: DD_AGENT_HOST
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: status.hostIP
-            - name: JAVA_OPTS
-              value: |-
-                -javaagent:/datadog-lib/dd-java-agent.jar -XX:FlightRecorderOptions=stackdepth=256 -Ddd.service={{ .Values.ruoyi.prefix }}-auth  -Ddd.logs.injection=true -Ddd.profiling.enabled=true -Ddd.profiling.ddprof.enabled=true -Ddd.profiling.ddprof.cpu.enabled=true -Ddd.profiling.ddprof.wall.enabled=true -Ddd.profiling.ddprof.alloc.enabled=true -Ddd.profiling.ddprof.liveheap.enabled=true -Ddd.tags=container_host:$(POD_NAME) -Ddd.service.mapping=mysql:{{ .Values.ruoyi.prefix }}-mysql,redis:{{ .Values.ruoyi.prefix }}-redis -Ddd.env={{ .Values.ruoyi.env }} -Ddd.version={{ .Values.ruoyi.version }} -Ddd.agent.port=9529
             - name: PARAMS
               value: "--spring.redis.host=redis-service --spring.nacos.ip=nacos-service"
           image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-auth:{{ .Values.global.version }}
@@ -52,6 +48,4 @@ spec:
       restartPolicy: Always
       volumes:
         - name: auth-log
-          hostPath:
-            path: /data/logs
-            type: DirectoryOrCreate
+          emptyDir: {}
