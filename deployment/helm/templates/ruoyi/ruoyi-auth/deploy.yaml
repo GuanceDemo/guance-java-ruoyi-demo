@@ -35,6 +35,8 @@ spec:
           env:
             - name: PARAMS
               value: "--spring.redis.host=redis-service --spring.nacos.ip=nacos-service"
+            - name: DD_SERVICE_MAPPING
+              value: "mysql:ruoyi-mysql,redis:ruoyi-redis"
           image: {{ .Values.global.docker_registry }}/{{ .Values.global.docker_namespace }}/demo-ruoyi-auth:{{ .Values.global.version }}
           imagePullPolicy: Always
           ports:
