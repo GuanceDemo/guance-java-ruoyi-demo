@@ -19,6 +19,8 @@ spec:
     metadata:
       labels:
         prod: nacos
+      annotations:
+        admission.datakit/enabled: "false"
     spec:
       containers:
         - env:
