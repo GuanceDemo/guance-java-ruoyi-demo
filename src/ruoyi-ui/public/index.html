@@ -43,6 +43,13 @@
           });
           window.DATAFLUX_RUM && window.DATAFLUX_RUM.startSessionReplayRecording()
       });
+
+      DATAFLUX_RUM.onReady(function() {
+          DATAFLUX_RUM.setUser({
+              id: '1',
+              name: 'admin'
+          })
+      })
       
       </script>
 
