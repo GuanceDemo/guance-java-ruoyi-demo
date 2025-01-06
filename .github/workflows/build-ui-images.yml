@@ -45,5 +45,5 @@ jobs:
           file: ./src/docker/nginx/dockerfile
           push: true
           tags: |
-            ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_NAMESPACE }}/demo-ruoyi-web:${{ github.sha }}-otel
-            ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_NAMESPACE }}/demo-ruoyi-web:latest-otel
+            ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_NAMESPACE }}/demo-ruoyi-web:${{ github.sha }}-ot
+            ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_NAMESPACE }}/demo-ruoyi-web:latest-ot

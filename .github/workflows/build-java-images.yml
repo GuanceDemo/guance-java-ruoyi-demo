@@ -3,7 +3,7 @@ name: Build and push ruoyi java demo images
 on:
   push:
     branches:
-      - master
+      - dev-opentelemetry-benjamin
     paths:
       - 'src/**'
   workflow_dispatch:
@@ -88,7 +88,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_NAMESPACE }}/${{ matrix.file_tag.repo }}:${{ github.sha }}
-            ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_NAMESPACE }}/${{ matrix.file_tag.repo }}:latest
+            ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_NAMESPACE }}/${{ matrix.file_tag.repo }}:${{ github.sha }}-ot
+            ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_NAMESPACE }}/${{ matrix.file_tag.repo }}:latest-ot
           cache-from: type=gha
           cache-to: type=gha
