@@ -7,5 +7,7 @@ ENV jar ruoyi-modules-job.jar
 ENV workdir /data/app/
 RUN mkdir -p ${workdir}
 COPY ./jar/${jar} ${workdir}
+COPY ../../tool/pkg/opentelemetry-javaagent.jar ${workdir}
+COPY ../../tool/pkg/pyroscope-otel_v1.0.4.jar ${workdir}
 WORKDIR ${workdir}
 ENTRYPOINT ["sh", "-ec", "exec java ${JAVA_OPTS} -jar ${jar} ${PARAMS} 2>&1 > /dev/null"]

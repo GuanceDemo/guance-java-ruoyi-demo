@@ -14,8 +14,8 @@ spec:
     metadata:
       labels:
         app: system-pod
-      annotations:
-        admission.datakit/java-lib.version: ""
+      # annotations:
+      #   admission.datakit/java-lib.version: ""
     spec:
       containers:
         - name: system-container
