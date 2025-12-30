@@ -67,6 +67,7 @@ jobs:
           registry: ${{ vars.DOCKER_REGISTRY }}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+          ecr: false
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
