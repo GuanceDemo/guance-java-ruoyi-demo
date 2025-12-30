@@ -47,7 +47,7 @@ jobs:
           fetch-depth: 0
 
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: Linux-java-0708c922d4bf4dab90192af21a5e94f25f35379430c7d269d18c20fe0d77cc10
