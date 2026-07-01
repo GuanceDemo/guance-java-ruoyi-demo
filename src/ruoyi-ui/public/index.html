@@ -41,6 +41,7 @@
           traceType: 'ddtrace',
           allowedTracingOrigins: [/.*/]
           });
+          DATAFLUX_RUM.setGlobalContextProperty('project', 'ruoyi');
           window.DATAFLUX_RUM && window.DATAFLUX_RUM.startSessionReplayRecording()
       });
 
